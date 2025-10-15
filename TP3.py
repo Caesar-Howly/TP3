@@ -1,20 +1,32 @@
 import random
 
-
-global numero_adversaire
 nbr_combat = 0
-
+nbr_vie = 20
 play_game = True
+boss = 0
 
 
-def encounter():
-    global nbr_vie
-    global nbr_combat
+def force_personnage(low, high):
+    return random.randint(low, high)
+
+regles = False
+force_adversaire = 0
+
+while play_game:
+
     nbr_combat += 1
+    if not regles:
+        if boss != 0 and boss % 3 == 0:
+            force_adversaire = force_personnage(5, 10)
+            print(f"Il y a un monstre incroyablement fort de force {force_adversaire}")
 
-    force_adversaire = random.randint(1, 5)
+        else:
+            force_adversaire = force_personnage(1, 5)
+            print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
+        regles = False
+    else:
+        print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
 
-    print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
     choix = str(input("""Que voulez-vous faire?
             1- Combattre cet adversaire
             2- Contourner cet adversaire et aller ouvrir une autre porte
@@ -32,6 +44,7 @@ def encounter():
             print("Woohoo! Vous avez battu le monstre.")
             nbr_vie += force_adversaire
             print(f"Vous avez désormais {nbr_vie} points de vie.")
+            boss += 1
 
     elif choix == "2":
         print("Vous fermez la porte avant que le monstre puisse te prendre, mais il te gratte.")
@@ -39,6 +52,7 @@ def encounter():
         print(f"Vous avez désormais {nbr_vie} points de vie.")
 
     elif choix == "3":
+        regles = True
         print("""
         Pour réussir un combat, il faut que la valeur du dé lancé soit supérieure à la force de l’adversaire.  Dans ce 
         cas, le niveau de vie de l’usager est augmenté de la force de l’adversaire.
@@ -59,14 +73,12 @@ def encounter():
         te montre ses dents pointus. Tu cries avec tout ta force pendant que tu rentre dans sa bouche et...
         """)
 
-        print("Aw... Vous avez perdu. À bientot..!")
-        global play_game
+        print("Aw... Vous avez perdu. À bientôt..!")
+        play_game = False
+
+    if nbr_vie <= 0:
+        print("Whoops! Vous n'avez plus de points de vie. Vous avez perdu. À bientôt!")
         play_game = False
 
 
 nbr_vie = 20
-
-while play_game:
-
-    encounter()
-    
