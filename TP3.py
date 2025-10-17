@@ -4,28 +4,32 @@ nbr_combat = 0
 nbr_vie = 20
 play_game = True
 boss = 0
+nbr_victoire = 0
 
 
 def force_personnage(low, high):
     return random.randint(low, high)
+
 
 regles = False
 force_adversaire = 0
 
 while play_game:
 
-    nbr_combat += 1
     if not regles:
         if boss != 0 and boss % 3 == 0:
             force_adversaire = force_personnage(5, 10)
             print(f"Il y a un monstre incroyablement fort de force {force_adversaire}")
-
+            boss = 0
         else:
             force_adversaire = force_personnage(1, 5)
             print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
         regles = False
     else:
-        print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
+        if boss != 0 and boss % 3 == 0:
+            print(f"Il y a un monstre incroyablement fort de force {force_adversaire}")
+        else:
+            print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
 
     choix = str(input("""Que voulez-vous faire?
             1- Combattre cet adversaire
@@ -34,7 +38,11 @@ while play_game:
             4- Quitter la partie"""))
 
     if choix == "1":
-        force_joueur = random.randint(1, 6)
+        nbr_combat += 1
+        if boss != 0 and boss % 3 == 0:
+            force_joueur = force_personnage(1, 12)
+        else:
+            force_joueur = random.randint(1, 6)
         print(f"Vous avez la force de {force_joueur}.")
         if force_joueur <= force_adversaire:
             print(f"Oh, non! Vous avez perdu.")
@@ -45,6 +53,7 @@ while play_game:
             nbr_vie += force_adversaire
             print(f"Vous avez désormais {nbr_vie} points de vie.")
             boss += 1
+            nbr_victoire += 1
 
     elif choix == "2":
         print("Vous fermez la porte avant que le monstre puisse te prendre, mais il te gratte.")
@@ -69,16 +78,27 @@ while play_game:
 
     else:
         print("""Vous regardez le monstre pendant qu'il cours vers toi. Vous restez ancré sur le sol, effrayez de la 
-        malice du monstre. Il te prend par le cou et l'air est coupé de ton corps. Il te regarde avec un sourire qui 
+        malice du monstre. Il te prend par le cou. Tu ne peux pas respirer. Il te regarde avec une sourire qui 
         te montre ses dents pointus. Tu cries avec tout ta force pendant que tu rentre dans sa bouche et...
         """)
 
-        print("Aw... Vous avez perdu. À bientôt..!")
+        print("Aw, vous avez perdu. À bientôt!")
         play_game = False
 
     if nbr_vie <= 0:
-        print("Whoops! Vous n'avez plus de points de vie. Vous avez perdu. À bientôt!")
-        play_game = False
+        print("Whoops! Vous n'avez plus de points de vie. Vous avez perdu.")
+        rejouer = str(input("Voulez-vous recommencer? o/n"))
+        if rejouer == "o":
+            print("On y va!")
+            nbr_vie = 20
+        else:
+            print("Au revoir.")
+
+    print(f"""
+Vous avez combattu {nbr_combat} de fois.
+        
+Vous avez gagnez {nbr_victoire} de fois
+            """)
 
 
 nbr_vie = 20
