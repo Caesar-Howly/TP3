@@ -1,10 +1,22 @@
+"""
+Nom: Caesar Howly
+Groupe: 407
+Ce code crée un jeu ou le joueur cours dans une couloir et, a chaque porte, il tombe face à face avec un monstre de
+force 1 à 5. Il jette donc un dé de 1 à 6. S'il recoit une nombre plus petite ou egale à la force du monstre, il perd le
+même nombre de vies au nombre de la force du monstre. S'il recoit une nombre plus grande que la force du monstre, il
+gagne le même nombre de vies au force du monstre. Après trois victoires,le joueur aura contre un monstre plus fort, le
+boss, qui a un minimum de 5 et un maximum de 10. Le joueur recevra un dé de 1 à 11 pour pouvoir gagner. Sinon, si le
+monstre et trop fort, le joueur poura échapper le monstre en sacrifiant 1 point de vie.
+"""
 import random
 
+play_game = True
 nbr_combat = 0
 nbr_vie = 20
-play_game = True
 boss = 0
 nbr_victoire = 0
+nbr_perds = 0
+victoire_cons = 0
 
 
 def force_personnage(low, high):
@@ -18,11 +30,10 @@ while play_game:
 
     if not regles:
         if boss != 0 and boss % 3 == 0:
-            force_adversaire = force_personnage(5, 10)
+            force_adversaire = force_personnage(4, 5) + force_personnage(4, 5)
             print(f"Il y a un monstre incroyablement fort de force {force_adversaire}")
-            boss = 0
         else:
-            force_adversaire = force_personnage(1, 5)
+            force_adversaire = force_personnage(1, 5) + force_personnage(1, 5)
             print(f"Vous tombez face à face avec un adversaire de difficulté: {force_adversaire}!")
         regles = False
     else:
@@ -40,25 +51,30 @@ while play_game:
     if choix == "1":
         nbr_combat += 1
         if boss != 0 and boss % 3 == 0:
-            force_joueur = force_personnage(1, 12)
+            force_joueur = force_personnage(1, 6) + force_personnage(1, 6)
+            boss = 0
         else:
-            force_joueur = random.randint(1, 6)
+            force_joueur = force_personnage(1, 6) + force_personnage(1, 6)
         print(f"Vous avez la force de {force_joueur}.")
         if force_joueur <= force_adversaire:
             print(f"Oh, non! Vous avez perdu.")
             nbr_vie -= force_adversaire
             print(f"Vous avez désormais {nbr_vie} points de vie.")
+            nbr_perds += 1
+            victoire_cons = 0
         else:
             print("Woohoo! Vous avez battu le monstre.")
             nbr_vie += force_adversaire
             print(f"Vous avez désormais {nbr_vie} points de vie.")
             boss += 1
             nbr_victoire += 1
+            victoire_cons += 1
 
     elif choix == "2":
         print("Vous fermez la porte avant que le monstre puisse te prendre, mais il te gratte.")
         nbr_vie -= 1
         print(f"Vous avez désormais {nbr_vie} points de vie.")
+        victoire_cons = 0
 
     elif choix == "3":
         regles = True
@@ -91,14 +107,19 @@ while play_game:
         if rejouer == "o":
             print("On y va!")
             nbr_vie = 20
+            nbr_combat = 0
+            nbr_victoire = 0
+            nbr_perds = 0
         else:
             print("Au revoir.")
+            play_game = False
 
     print(f"""
-Vous avez combattu {nbr_combat} de fois.
+Vous avez combattu {nbr_combat} fois.
         
-Vous avez gagnez {nbr_victoire} de fois
+Vous avez gagnez {nbr_victoire} fois
+
+Vous avez perdu {nbr_perds} fois.
+
+Vous avez gagnez {victoire_cons} fois consécutivement.
             """)
-
-
-nbr_vie = 20
