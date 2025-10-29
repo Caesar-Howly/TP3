@@ -6,7 +6,7 @@ force 1 à 5. Il jette donc un dé de 1 à 6. S'il recoit une nombre plus petite
 même nombre de vies au nombre de la force du monstre. S'il recoit une nombre plus grande que la force du monstre, il
 gagne le même nombre de vies au force du monstre. Après trois victoires,le joueur aura contre un monstre plus fort, le
 boss, qui a un minimum de 5 et un maximum de 10. Le joueur recevra un dé de 1 à 11 pour pouvoir gagner. Sinon, si le
-monstre et trop fort, le joueur poura échapper le monstre en sacrifiant 1 point de vie.
+monstre et trop fort, le joueur pourra échapper le monstre en sacrifiant 1 point de vie.
 """
 import random
 
@@ -17,6 +17,14 @@ boss = 0
 nbr_victoire = 0
 nbr_perds = 0
 victoire_cons = 0
+
+
+class Colors:
+    RESET = '\033[0m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    BLUE = '\033[34m'
+    CYAN = '\033[36m'
 
 
 def force_personnage(low, high):
@@ -46,7 +54,8 @@ while play_game:
             1- Combattre cet adversaire
             2- Contourner cet adversaire et aller ouvrir une autre porte
             3- Afficher les règles du jeu
-            4- Quitter la partie"""))
+            4- Quitter la partie
+            """))
 
     if choix == "1":
         nbr_combat += 1
@@ -81,12 +90,11 @@ while play_game:
         print("""
         Pour réussir un combat, il faut que la valeur du dé lancé soit supérieure à la force de l’adversaire.  Dans ce 
         cas, le niveau de vie de l’usager est augmenté de la force de l’adversaire.
+        
         Une défaite a lieu lorsque la valeur du dé lancé par l’usager est inférieure ou égale à la force de 
         l’adversaire.  Dans ce cas, le niveau de vie de l’usager est diminué de la force de l’adversaire.
 
-
         La partie se termine lorsque les points de vie de l’usager tombent sous 0.
-
 
         L’usager peut combattre ou éviter chaque adversaire, dans le cas de l’évitement, il y a une pénalité de 1 point 
         de vie.
@@ -114,12 +122,10 @@ while play_game:
             print("Au revoir.")
             play_game = False
 
-    print(f"""
-Vous avez combattu {nbr_combat} fois.
+    print(Colors.CYAN + f"Vous avez combattu {nbr_combat} fois." + Colors.RESET)
         
-Vous avez gagnez {nbr_victoire} fois
+    print(Colors.BLUE + f"Vous avez gagnez {nbr_victoire} fois" + Colors.RESET)
 
-Vous avez perdu {nbr_perds} fois.
+    print(Colors.RED + f"Vous avez perdu {nbr_perds} fois." + Colors.RESET)
 
-Vous avez gagnez {victoire_cons} fois consécutivement.
-            """)
+    print(Colors.GREEN + f"Vous avez gagnez {victoire_cons} fois consécutivement." + Colors.RESET)
