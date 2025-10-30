@@ -27,6 +27,16 @@ class Colors:
     CYAN = '\033[36m'
 
 
+def show_stats():
+    print(Colors.CYAN + f"Vous avez combattu {nbr_combat} fois." + Colors.RESET)
+
+    print(Colors.BLUE + f"Vous avez gagnez {nbr_victoire} fois" + Colors.RESET)
+
+    print(Colors.RED + f"Vous avez perdu {nbr_perds} fois." + Colors.RESET)
+
+    print(Colors.GREEN + f"Vous avez gagnez {victoire_cons} fois consécutivement." + Colors.RESET)
+
+
 def force_personnage(low, high):
     return random.randint(low, high)
 
@@ -68,22 +78,22 @@ while play_game:
         if force_joueur <= force_adversaire:
             print(f"Oh, non! Vous avez perdu.")
             nbr_vie -= force_adversaire
-            print(f"Vous avez désormais {nbr_vie} points de vie.")
             nbr_perds += 1
             victoire_cons = 0
         else:
             print("Woohoo! Vous avez battu le monstre.")
             nbr_vie += force_adversaire
-            print(f"Vous avez désormais {nbr_vie} points de vie.")
             boss += 1
             nbr_victoire += 1
             victoire_cons += 1
-
+        print(f"Vous avez désormais {nbr_vie} points de vie.")
+        show_stats()
     elif choix == "2":
         print("Vous fermez la porte avant que le monstre puisse te prendre, mais il te gratte.")
         nbr_vie -= 1
         print(f"Vous avez désormais {nbr_vie} points de vie.")
         victoire_cons = 0
+        show_stats()
 
     elif choix == "3":
         regles = True
@@ -107,11 +117,13 @@ while play_game:
         """)
 
         print("Aw, vous avez perdu. À bientôt!")
+        show_stats()
         play_game = False
 
     if nbr_vie <= 0:
         print("Whoops! Vous n'avez plus de points de vie. Vous avez perdu.")
         rejouer = str(input("Voulez-vous recommencer? o/n"))
+        show_stats()
         if rejouer == "o":
             print("On y va!")
             nbr_vie = 20
@@ -121,11 +133,3 @@ while play_game:
         else:
             print("Au revoir.")
             play_game = False
-
-    print(Colors.CYAN + f"Vous avez combattu {nbr_combat} fois." + Colors.RESET)
-        
-    print(Colors.BLUE + f"Vous avez gagnez {nbr_victoire} fois" + Colors.RESET)
-
-    print(Colors.RED + f"Vous avez perdu {nbr_perds} fois." + Colors.RESET)
-
-    print(Colors.GREEN + f"Vous avez gagnez {victoire_cons} fois consécutivement." + Colors.RESET)
